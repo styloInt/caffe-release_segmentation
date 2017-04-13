@@ -1,0 +1,23 @@
+
+net: "/home/luffy/Documents/Stage/caffe/models/fcn_perso/fcn_perso4_topoSmoothloss.prototxt"
+
+
+test_iter: 25
+test_interval: 500
+max_iter: 800000
+
+
+base_lr: 1e-10
+display: 20
+lr_policy: "fixed"
+gamma: 0.1
+momentum: 0.99
+weight_decay: 0.0005
+stepsize: 9000
+snapshot: 5000
+snapshot_prefix: "/media/luffy/DATA/Users/abdel/models_pretrained_rv_softmax/perso1/train_perso4_Topo_topoSmoothloss_softmax"
+solver_mode: GPU
+test_initialization: true
+average_loss: 20
+iter_size: 1
+type: "Adam"
