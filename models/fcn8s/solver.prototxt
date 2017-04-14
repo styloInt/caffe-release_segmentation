@@ -1,0 +1,18 @@
+net: "/home/atemmar/caffe/models/fcn8s/train.prototxt"
+test_iter: 5105
+# make test net, but don't invoke it from the solver itself
+test_interval: 500
+display: 20
+average_loss: 20
+lr_policy: "fixed"
+# lr for unnormalized softmax
+base_lr: 1e-12
+# high momentum
+momentum: 0.99
+# no gradient accumulation
+iter_size: 1
+max_iter: 300000
+weight_decay: 0.0005
+snapshot: 4000
+snapshot_prefix: "/home/atemmar/Documents/Stage_ets/caffe-release_segmentation/fcn8s"
+test_initialization: false

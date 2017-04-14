@@ -44,14 +44,14 @@ layer {
   }
   convolution_param {
     num_output: 32
-    pad: 0
+    pad: 1
     kernel_size: 3
     stride: 1
     weight_filler {
       type: "xavier"
     }
     bias_filler {
-      type: "xavier"
+      type: "constant"
     }
   }
 }
@@ -96,10 +96,11 @@ layer {
       type: "xavier"
     }
     bias_filler {
-      type: "xavier"
+      type: "constant"
     }
   }
 }
+
 layer {
   name: "relu2"
   type: "ReLU"
@@ -146,17 +147,18 @@ layer {
   }
   convolution_param {
     num_output: 32
-    pad: 0
+    pad: 1
     kernel_size: 3
     stride: 1
     weight_filler {
       type: "xavier"
     }
     bias_filler {
-      type: "xavier"
+      type: "constant"
     }
   }
 }
+
 layer {
   name: "relu3"
   type: "ReLU"
@@ -190,7 +192,7 @@ layer {
     decay_mult: 0
   }
   convolution_param {
-    num_output: 32
+    num_output: 64
     pad: 0
     kernel_size: 3
     stride: 1
@@ -198,7 +200,7 @@ layer {
       type: "xavier"
     }
     bias_filler {
-      type: "xavier"
+      type: "constant"
     }
   }
 }
@@ -221,6 +223,19 @@ layer {
   }
 }
 
+# layer {
+#   name: "pool2"
+#   type: "Pooling"
+#   bottom: "conv4"
+#   top: "pool2"
+#   pooling_param {
+#     pool: MAX
+#     kernel_size: 2
+#     stride: 2
+#   }
+# }
+
+
 layer {
   name: "conv5"
   type: "Convolution"
@@ -235,15 +250,15 @@ layer {
     decay_mult: 0
   }
   convolution_param {
-    num_output: 32
-    pad: 0
+    num_output: 63
+    pad: 1
     kernel_size: 3
     stride: 1
     weight_filler {
       type: "xavier"
     }
     bias_filler {
-      type: "xavier"
+      type: "constant"
     }
   }
 }
@@ -280,15 +295,15 @@ layer {
     decay_mult: 0
   }
   convolution_param {
-    num_output: 32
-    pad: 0
+    num_output: 64
+    pad: 1
     kernel_size: 3
     stride: 1
     weight_filler {
       type: "xavier"
     }
     bias_filler {
-      type: "xavier"
+      type: "constant"
     }
   }
 }
@@ -311,6 +326,7 @@ layer {
   }
 }
 
+
 layer {
   name: "conv7"
   type: "Convolution"
@@ -325,15 +341,15 @@ layer {
     decay_mult: 0
   }
   convolution_param {
-    num_output: 32
-    pad: 0
+    num_output: 132
+    pad: 1
     kernel_size: 3
     stride: 1
     weight_filler {
       type: "xavier"
     }
     bias_filler {
-      type: "xavier"
+      type: "constant"
     }
   }
 }
@@ -370,15 +386,15 @@ layer {
     decay_mult: 0
   }
   convolution_param {
-    num_output: 32
-    pad: 0
+    num_output: 256
+    pad: 1
     kernel_size: 3
     stride: 1
     weight_filler {
       type: "xavier"
     }
     bias_filler {
-      type: "xavier"
+      type: "constant"
     }
   }
 }
@@ -411,41 +427,20 @@ layer {
     lr_mult: 1
     decay_mult: 1
   }
-  param {
-    lr_mult: 2
-    decay_mult: 0
-  }
   convolution_param {
-    num_output: 63
-    pad: 0
+    num_output: 3
+    pad: 1
     kernel_size: 1
     stride: 1
     weight_filler {
       type: "xavier"
     }
     bias_filler {
-      type: "xavier"
+      type: "constant"
     }
   }
 }
-layer {
-  name: "relu9"
-  type: "ReLU"
-  bottom: "conv9"
-  top: "conv9"
-}
 
-layer {
-  name: "norm9"
-  type: "LRN"
-  bottom: "conv9"
-  top: "conv9"
-  lrn_param {
-    local_size: 5
-    alpha: 0.0001
-    beta: 0.75
-  }
-}
 
 layer {
   name: "upsample-big"
@@ -453,20 +448,20 @@ layer {
   bottom: "conv9"
   top: "score-big"
   param {
-    lr_mult: 0
-  }
-  param {
-    lr_mult: 0
-  }
+    lr_mult: 1
+  }  
+
   convolution_param {
     num_output: 3
-    kernel_size: 75
-    group: 3
+    bias_term: false
+    kernel_size: 66
     stride: 1
+    group: 3
+
     weight_filler {
-      type: "bilinear"
-    }
-    engine: CAFFE
+        type: "bilinear"
+      }
+
   }
 }
 
