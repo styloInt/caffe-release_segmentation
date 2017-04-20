@@ -1,33 +1,14 @@
-name: "perso1"
-layer {
-  name: "data"
-  type: "Python"
-  top: "data"
-  top: "label"
-  python_param {
-    module: "rv_layers"
-    layer: "RV_layer"
-    param_str: "{\'rv_dir\': \'/home/atemmar/Documents/Stage_ets/caffe-release_segmentation/dataSet_preprocess/Train_croped\', \'seed\': 1337, \'split\': \'train_x_files.txt\', \'mean_image\': \'/home/atemmar/Documents/Stage_ets/caffe-release_segmentation/dataSet_preprocess/Train_croped/mean_image.png\'}"
-  }
-  include{
-    phase : TRAIN
-  }
-}
 
-layer {
-  name: "data"
-  type: "Python"
-  top: "data"
-  top: "label"
-  python_param {
-    module: "rv_layers"
-    layer: "RV_layer"
-    param_str: "{\'rv_dir\': \'/home/atemmar/Documents/Stage_ets/caffe-release_segmentation/dataSet_preprocess/Test_croped\', \'seed\': 1337, \'split\': \'test_x_files.txt\', \'mean_image\': \'/home/atemmar/Documents/Stage_ets/caffe-release_segmentation/dataSet_preprocess/Train_croped/mean_image.png\'}"
-  }
-  include{
-    phase : TEST
-    }
-}
+
+name: "fcn15 deploy"
+
+input: "data"
+input_dim: 1
+input_dim: 1
+input_dim: 256
+input_dim: 216
+
+# NETWORK
 
 layer {
   name: "conv1"
@@ -43,7 +24,7 @@ layer {
     decay_mult: 0
   }
   convolution_param {
-    num_output: 96
+    num_output: 32
     pad: 5
     kernel_size: 3
     stride: 1
@@ -79,7 +60,7 @@ layer {
   bottom: "pool1"
   top: "norm1"
   lrn_param {
-    local_size: 5
+    local_size: 3
     alpha: 0.0001
     beta: 0.75
   }
@@ -98,7 +79,7 @@ layer {
     decay_mult: 0
   }
   convolution_param {
-    num_output: 256
+    num_output: 32
     pad: 1
     kernel_size: 3
     group: 2
@@ -124,7 +105,7 @@ layer {
   bottom: "conv2"
   top: "conv2"
   lrn_param {
-    local_size: 5
+    local_size: 3
     alpha: 0.0001
     beta: 0.75
   }
@@ -191,7 +172,7 @@ layer {
   bottom: "conv3"
   top: "conv3"
   lrn_param {
-    local_size: 5
+    local_size: 3
     alpha: 0.0001
     beta: 0.75
   }
@@ -211,7 +192,7 @@ layer {
     decay_mult: 0
   }
   convolution_param {
-    num_output: 384
+    num_output: 32
     pad: 1
     kernel_size: 3
     group: 2
@@ -237,7 +218,7 @@ layer {
   bottom: "conv4"
   top: "conv4"
   lrn_param {
-    local_size: 5
+    local_size: 3
     alpha: 0.0001
     beta: 0.75
   }
@@ -257,7 +238,7 @@ layer {
     decay_mult: 0
   }
   convolution_param {
-    num_output: 256
+    num_output: 32
     pad: 1
     kernel_size: 3
     group: 2
@@ -283,7 +264,7 @@ layer {
   bottom: "conv5"
   top: "conv5"
   lrn_param {
-    local_size: 5
+    local_size: 3
     alpha: 0.0001
     beta: 0.75
   }
@@ -412,6 +393,19 @@ layer {
     }
   }
 }
+
+layer {
+  name: "norm6"
+  type: "LRN"
+  bottom: "score"
+  top: "score"
+  lrn_param {
+    local_size: 3
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+
 layer {
   name: "upsample-big"
   type: "Deconvolution"
@@ -425,15 +419,28 @@ layer {
   }
   convolution_param {
     num_output: 3
-    kernel_size: 63
+    kernel_size: 4
     group: 3
-    stride: 1
+    stride: 2
     weight_filler {
       type: "bilinear"
     }
     engine: CAFFE
   }
 }
+
+# layer {
+#   name: "norm7"
+#   type: "LRN"
+#   bottom: "score-big"
+#   top: "score-big"
+#   lrn_param {
+#     local_size: 3
+#     alpha: 0.0001
+#     beta: 0.75
+#   }
+# }
+
 
 layer { 
   name: "crop" 
@@ -445,23 +452,3 @@ layer {
     axis: 2
   }
   }
-
-#   layer {
-#   name: "softmaxout"
-#   type: "Softmax"
-#   bottom: "score-final"
-#   top: "out"
-# }
-
-
-layer {
-  name: "prob_final"
-  type: "SoftmaxWithLoss"
-  bottom: "score-final"
-  bottom: "label"
-  top: "loss"
-  loss_param {
-    ignore_label: 255
-    normalize: true
-  }
-}

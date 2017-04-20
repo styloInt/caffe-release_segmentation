@@ -1,5 +1,5 @@
 
-net: "/home/atemmar/caffe/models/fcn_perso/fcn_perso5_softmaxloss.prototxt"
+net: "/home/atemmar/caffe/models/fcn_perso/fcn_perso5_softmaxsmoothloss.prototxt"
 
 test_iter: 25
 test_interval: 500
@@ -14,7 +14,7 @@ momentum: 0.99
 weight_decay: 0.0005
 stepsize: 9000
 snapshot: 2000
-snapshot_prefix: "/home/atemmar/Documents/Stage_ets/caffe-release_segmentation/models_pretrained_rv/perso/train_perso52_Topo_pretrained_augmented_softmax"
+snapshot_prefix: "/home/atemmar/Documents/Stage_ets/caffe-release_segmentation/models_pretrained_rv/perso/train_perso5_hist_0505_Topo_pretrained_augmented_softmaxsmooth"
 solver_mode: GPU
 test_initialization: true
 average_loss: 20
