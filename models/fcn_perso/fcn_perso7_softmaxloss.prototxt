@@ -7,7 +7,7 @@ layer {
   python_param {
     module: "rv_layers"
     layer: "RV_layer"
-    param_str: "{\'rv_dir\': \'/home/atemmar/Documents/Stage_ets/caffe-release_segmentation/dataSet_preprocess/Train_croped\', \'seed\': 1337, \'split\': \'train_x_files.txt\', \'mean_image\': \'/home/atemmar/Documents/Stage_ets/caffe-release_segmentation/dataSet_preprocess/Train_croped/mean_image.png\'}"
+    param_str: "{\'rv_dir\': \'/home/atemmar/Documents/Stage_ets/caffe-release_segmentation/dataSet_preprocess/Train_augmented\', \'seed\': 1337, \'split\': \'train_x_files.txt\', \'image_template\': \'/home/atemmar/Documents/Stage_ets/caffe-release_segmentation/dataSet_preprocess/Train/IRM/0.png\'}"
   }
   include{
     phase : TRAIN
@@ -22,12 +22,13 @@ layer {
   python_param {
     module: "rv_layers"
     layer: "RV_layer"
-    param_str: "{\'rv_dir\': \'/home/atemmar/Documents/Stage_ets/caffe-release_segmentation/dataSet_preprocess/Test_croped\', \'seed\': 1337, \'split\': \'test_x_files.txt\', \'mean_image\': \'/home/atemmar/Documents/Stage_ets/caffe-release_segmentation/dataSet_preprocess/Train_croped/mean_image.png\'}"
+    param_str: "{\'rv_dir\': \'/home/atemmar/Documents/Stage_ets/caffe-release_segmentation/dataSet_preprocess/Test\', \'seed\': 1337, \'split\': \'test_x_files.txt\', \'image_template\': \'/home/atemmar/Documents/Stage_ets/caffe-release_segmentation/dataSet_preprocess/Train/IRM/0.png\'}"
   }
   include{
     phase : TEST
     }
 }
+
 
 layer {
   name: "conv1"
@@ -43,8 +44,8 @@ layer {
     decay_mult: 0
   }
   convolution_param {
-    num_output: 96
-    pad: 1
+    num_output: 32
+    pad: 5
     kernel_size: 3
     stride: 1
     weight_filler {
@@ -52,6 +53,7 @@ layer {
     }
     bias_filler {
       type: "constant"
+      value: 0
     }
   }
 }
@@ -61,23 +63,32 @@ layer {
   bottom: "conv1"
   top: "conv1"
 }
-
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
 layer {
   name: "norm1"
   type: "LRN"
-  bottom: "conv1"
-  top: "conv1"
+  bottom: "pool1"
+  top: "norm1"
   lrn_param {
-    local_size: 5
+    local_size: 3
     alpha: 0.0001
     beta: 0.75
   }
 }
-
 layer {
   name: "conv2"
   type: "Convolution"
-  bottom: "conv1"
+  bottom: "norm1"
   top: "conv2"
   param {
     lr_mult: 1
@@ -88,19 +99,19 @@ layer {
     decay_mult: 0
   }
   convolution_param {
-    num_output: 96
+    num_output: 64
     pad: 1
     kernel_size: 3
-    stride: 1
+    group: 2
     weight_filler {
       type: "xavier"
     }
     bias_filler {
       type: "constant"
+      value: 1
     }
   }
 }
-
 layer {
   name: "relu2"
   type: "ReLU"
@@ -114,28 +125,38 @@ layer {
   bottom: "conv2"
   top: "conv2"
   lrn_param {
-    local_size: 5
+    local_size: 3
     alpha: 0.0001
     beta: 0.75
   }
 }
 
-layer {
-  name: "pool1"
-  type: "Pooling"
-  bottom: "conv2"
-  top: "pool1"
-  pooling_param {
-    pool: MAX
-    kernel_size: 2
-    stride: 2
-  }
-}
-
+# layer {
+#   name: "pool2"
+#   type: "Pooling"
+#   bottom: "conv2"
+#   top: "pool2"
+#   pooling_param {
+#     pool: MAX
+#     kernel_size: 3
+#     stride: 1
+#   }
+# }
+# layer {
+#   name: "norm2"
+#   type: "LRN"
+#   bottom: "pool2"
+#   top: "norm2"
+#   lrn_param {
+#     local_size: 5
+#     alpha: 0.0001
+#     beta: 0.75
+#   }
+# }
 layer {
   name: "conv3"
   type: "Convolution"
-  bottom: "pool1"
+  bottom: "conv2"
   top: "conv3"
   param {
     lr_mult: 1
@@ -146,19 +167,18 @@ layer {
     decay_mult: 0
   }
   convolution_param {
-    num_output: 256
+    num_output: 128
     pad: 1
     kernel_size: 3
-    stride: 1
     weight_filler {
       type: "xavier"
     }
     bias_filler {
       type: "constant"
+      value: 0
     }
   }
 }
-
 layer {
   name: "relu3"
   type: "ReLU"
@@ -172,7 +192,7 @@ layer {
   bottom: "conv3"
   top: "conv3"
   lrn_param {
-    local_size: 5
+    local_size: 3
     alpha: 0.0001
     beta: 0.75
   }
@@ -195,12 +215,13 @@ layer {
     num_output: 256
     pad: 1
     kernel_size: 3
-    stride: 1
+    group: 2
     weight_filler {
       type: "xavier"
     }
     bias_filler {
       type: "constant"
+      value: 1
     }
   }
 }
@@ -217,24 +238,11 @@ layer {
   bottom: "conv4"
   top: "conv4"
   lrn_param {
-    local_size: 5
+    local_size: 3
     alpha: 0.0001
     beta: 0.75
   }
 }
-
-# layer {
-#   name: "pool2"
-#   type: "Pooling"
-#   bottom: "conv4"
-#   top: "pool2"
-#   pooling_param {
-#     pool: MAX
-#     kernel_size: 2
-#     stride: 2
-#   }
-# }
-
 
 layer {
   name: "conv5"
@@ -253,12 +261,13 @@ layer {
     num_output: 256
     pad: 1
     kernel_size: 3
-    stride: 1
+    group: 2
     weight_filler {
       type: "xavier"
     }
     bias_filler {
       type: "constant"
+      value: 1
     }
   }
 }
@@ -275,7 +284,7 @@ layer {
   bottom: "conv5"
   top: "conv5"
   lrn_param {
-    local_size: 5
+    local_size: 3
     alpha: 0.0001
     beta: 0.75
   }
@@ -295,15 +304,16 @@ layer {
     decay_mult: 0
   }
   convolution_param {
-    num_output: 356
+    num_output: 512
     pad: 1
     kernel_size: 3
-    stride: 1
+    group: 2
     weight_filler {
       type: "xavier"
     }
     bias_filler {
       type: "constant"
+      value: 1
     }
   }
 }
@@ -315,23 +325,22 @@ layer {
 }
 
 layer {
-  name: "norm6"
+  name: "norm5"
   type: "LRN"
   bottom: "conv6"
   top: "conv6"
   lrn_param {
-    local_size: 5
+    local_size: 3
     alpha: 0.0001
     beta: 0.75
   }
 }
 
-
 layer {
-  name: "conv7"
+  name: "score"
   type: "Convolution"
   bottom: "conv6"
-  top: "conv7"
+  top: "score"
   param {
     lr_mult: 1
     decay_mult: 1
@@ -339,144 +348,67 @@ layer {
   param {
     lr_mult: 2
     decay_mult: 0
-  }
-  convolution_param {
-    num_output: 256
-    pad: 1
-    kernel_size: 3
-    stride: 1
-    weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-    }
-  }
-}
-layer {
-  name: "relu7"
-  type: "ReLU"
-  bottom: "conv7"
-  top: "conv7"
-}
-
-layer {
-  name: "norm7"
-  type: "LRN"
-  bottom: "conv7"
-  top: "conv7"
-  lrn_param {
-    local_size: 5
-    alpha: 0.0001
-    beta: 0.75
-  }
-}
-
-layer {
-  name: "conv8"
-  type: "Convolution"
-  bottom: "conv7"
-  top: "conv8"
-  param {
-    lr_mult: 1
-    decay_mult: 1
-  }
-  param {
-    lr_mult: 2
-    decay_mult: 0
-  }
-  convolution_param {
-    num_output: 256
-    pad: 1
-    kernel_size: 3
-    stride: 1
-    weight_filler {
-      type: "xavier"
-    }
-    bias_filler {
-      type: "constant"
-    }
-  }
-}
-layer {
-  name: "relu8"
-  type: "ReLU"
-  bottom: "conv8"
-  top: "conv8"
-}
-
-layer {
-  name: "norm8"
-  type: "LRN"
-  bottom: "conv8"
-  top: "conv8"
-  lrn_param {
-    local_size: 5
-    alpha: 0.0001
-    beta: 0.75
-  }
-}
-
-
-layer {
-  name: "conv9"
-  type: "Convolution"
-  bottom: "conv8"
-  top: "conv9"
-  param {
-    lr_mult: 1
-    decay_mult: 1
   }
   convolution_param {
     num_output: 3
-    pad: 1
     kernel_size: 1
-    stride: 1
     weight_filler {
       type: "xavier"
     }
     bias_filler {
       type: "constant"
+      value: 1
     }
   }
 }
 
-
 layer {
-  name: "norm9"
+  name: "norm6"
   type: "LRN"
-  bottom: "conv9"
-  top: "conv9"
+  bottom: "score"
+  top: "score"
   lrn_param {
-    local_size: 5
+    local_size: 3
     alpha: 0.0001
     beta: 0.75
   }
 }
-
 
 layer {
   name: "upsample-big"
   type: "Deconvolution"
-  bottom: "conv9"
+  bottom: "score"
   top: "score-big"
   param {
-    lr_mult: 1
-  }  
-
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
   convolution_param {
     num_output: 3
-    bias_term: false
-    kernel_size: 64
-    stride: 1
+    kernel_size: 4
     group: 3
-
+    stride: 2
     weight_filler {
-        type: "bilinear"
-      }
-
+      type: "bilinear"
+    }
+    engine: CAFFE
   }
 }
+
+# layer {
+#   name: "norm7"
+#   type: "LRN"
+#   bottom: "score-big"
+#   top: "score-big"
+#   lrn_param {
+#     local_size: 3
+#     alpha: 0.0001
+#     beta: 0.75
+#   }
+# }
+
 
 layer { 
   name: "crop" 
@@ -487,7 +419,7 @@ layer {
   crop_param {
     axis: 2
   }
-}
+  }
 
 #   layer {
 #   name: "softmaxout"
@@ -502,7 +434,7 @@ layer {
   type: "SoftmaxWithLoss"
   bottom: "score-final"
   bottom: "label"
-  top: "loss"
+  top: "loss_softmax"
   loss_param {
     ignore_label: 255
     normalize: true

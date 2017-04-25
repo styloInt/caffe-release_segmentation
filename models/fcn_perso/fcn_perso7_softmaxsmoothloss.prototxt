@@ -99,7 +99,7 @@ layer {
     decay_mult: 0
   }
   convolution_param {
-    num_output: 32
+    num_output: 64
     pad: 1
     kernel_size: 3
     group: 2
@@ -167,7 +167,7 @@ layer {
     decay_mult: 0
   }
   convolution_param {
-    num_output: 384
+    num_output: 128
     pad: 1
     kernel_size: 3
     weight_filler {
@@ -212,7 +212,7 @@ layer {
     decay_mult: 0
   }
   convolution_param {
-    num_output: 32
+    num_output: 256
     pad: 1
     kernel_size: 3
     group: 2
@@ -258,7 +258,7 @@ layer {
     decay_mult: 0
   }
   convolution_param {
-    num_output: 32
+    num_output: 256
     pad: 1
     kernel_size: 3
     group: 2
@@ -290,108 +290,56 @@ layer {
   }
 }
 
+layer {
+  name: "conv6"
+  type: "Convolution"
+  bottom: "conv5"
+  top: "conv6"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 512
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu6"
+  type: "ReLU"
+  bottom: "conv6"
+  top: "conv6"
+}
 
-# layer {
-#   name: "relu5"
-#   type: "ReLU"
-#   bottom: "conv5"
-#   top: "conv5"
-# }
-# layer {
-#   name: "pool5"
-#   type: "Pooling"
-#   bottom: "conv5"
-#   top: "pool5"
-#   pooling_param {
-#     pool: MAX
-#     kernel_size: 3
-#     stride: 2
-#   }
-# }
-# layer {
-#   name: "fc6"
-#   type: "Convolution"
-#   bottom: "pool5"
-#   top: "fc6"
-#   param {
-#     lr_mult: 1
-#     decay_mult: 1
-#   }
-#   param {
-#     lr_mult: 2
-#     decay_mult: 0
-#   }
-#   convolution_param {
-#     num_output: 4096
-#     kernel_size: 6
-#     weight_filler {
-#       type: "xavier"
-#     }
-#     bias_filler {
-#       type: "constant"
-#       value: 1
-#     }
-#   }
-# }
-# layer {
-#   name: "relu6"
-#   type: "ReLU"
-#   bottom: "fc6"
-#   top: "fc6"
-# }
-# layer {
-#   name: "drop6"
-#   type: "Dropout"
-#   bottom: "fc6"
-#   top: "fc6"
-#   dropout_param {
-#     dropout_ratio: 0.5
-#   }
-# }
-# layer {
-#   name: "fc7"
-#   type: "Convolution"
-#   bottom: "fc6"
-#   top: "fc7"
-#   param {
-#     lr_mult: 1
-#     decay_mult: 1
-#   }
-#   param {
-#     lr_mult: 2
-#     decay_mult: 0
-#   }
-#   convolution_param {
-#     num_output: 4096
-#     kernel_size: 1
-#     weight_filler {
-#       type: "xavier"
-#     }
-#     bias_filler {
-#       type: "constant"
-#       value: 1
-#     }
-#   }
-# }
-# layer {
-#   name: "relu7"
-#   type: "ReLU"
-#   bottom: "fc7"
-#   top: "fc7"
-# }
-# layer {
-#   name: "drop7"
-#   type: "Dropout"
-#   bottom: "fc7"
-#   top: "fc7"
-#   dropout_param {
-#     dropout_ratio: 0.5
-#   }
-# }
+layer {
+  name: "norm5"
+  type: "LRN"
+  bottom: "conv6"
+  top: "conv6"
+  lrn_param {
+    local_size: 3
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+
 layer {
   name: "score"
   type: "Convolution"
-  bottom: "conv5"
+  bottom: "conv6"
   top: "score"
   param {
     lr_mult: 1
@@ -482,27 +430,26 @@ layer {
 
 
 layer {
-  name: "prob_final1"
-  type: "Topo2SoftmaxLoss"
+  name: "prob_final"
+  type: "SoftmaxWithLoss"
   bottom: "score-final"
   bottom: "label"
-  top: "loss_topo"
-  loss_weight: 0.9
+  top: "loss_softmax"
+  loss_weight: 0.6
   loss_param {
-    ignore_label: 3
+    ignore_label: 255
     normalize: true
   }
 }
 
 layer {
-    name: "prob_final2"    
+    name: "prob_final"    
     type: "SmoothOnlyLoss"
     bottom: "score-final"
     bottom: "label"
     top: "loss_smooth"
-    loss_weight: 0.1
+    loss_weight: 0.4
     loss_param {
-      ignore_label: 3
       normalize: true
     }
   }
