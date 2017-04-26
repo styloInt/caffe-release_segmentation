@@ -1,0 +1,93 @@
+% francisation des algorithmes
+\renewcommand{\sectionmark}[1]{}
+\renewcommand{\algorithmicrequire} {\textbf{\textsc{Entrées:}}}
+\renewcommand{\algorithmicensure}  {\textbf{\textsc{Sorties:}}}
+\renewcommand{\algorithmicwhile}   {\textbf{tantque}}
+\renewcommand{\algorithmicdo}      {\textbf{faire}}
+\renewcommand{\algorithmicendwhile}{\textbf{fin tantque}}
+\renewcommand{\algorithmicend}     {\textbf{fin}}
+\renewcommand{\algorithmicif}      {\textbf{si}}
+\renewcommand{\algorithmicendif}   {\textbf{finsi}}
+\renewcommand{\algorithmicelse}    {\textbf{sinon}}
+\renewcommand{\algorithmicthen}    {\textbf{alors}}
+\renewcommand{\algorithmicfor}     {\textbf{pour}}
+\renewcommand{\algorithmicforall}  {\textbf{pour tout}}
+\renewcommand{\algorithmicdo}      {\textbf{faire}}
+\renewcommand{\algorithmicendfor}  {\textbf{fin pour}}
+\renewcommand{\algorithmicloop}    {\textbf{boucler}}
+\renewcommand{\algorithmicendloop} {\textbf{fin boucle}}
+\renewcommand{\algorithmicrepeat}  {\textbf{répéter}}
+\renewcommand{\algorithmicuntil}   {\textbf{jusqu'à}}
+
+\floatname{algorithm}{Algorithme}
+
+
+%
+% Definir les termes francais 
+%
+  \gdef\@dedicace{D\'edicace}
+  \gdef\@remerciements{Remerciements}
+  \def\prefacename{Avant-propos}
+  \def\refname{R\'ef\'erences}
+  \gdef\@resume{R\'esum\'e}
+  \gdef\@notation{Notation}
+   \gdef\@abbreviation{Liste des Sigles}
+  \gdef\abstractname{Abstract}
+  \def\bibname{R\'ef\'erences}
+  \gdef\@introduction{Introduction}
+  \def\chaptername{Chapitre}
+  \gdef\@conclusion{Conclusion}
+  \def\appendixname{Annexe}
+  \gdef\@tabledesmatieres{Table des mati\`eres}
+  \gdef\@listedesfigures{Liste des figures}
+  \gdef\@listedeslistings{Liste des codes source}
+  \gdef\@listedestableaux{Liste des tableaux}
+  \gdef\@listedesannexes{Liste des annexes}
+  \def\indexname{Index}
+  \def\figurename{Figure}
+  \def\tablename{Tableau}
+  \def\partname{Partie}
+  \def\ccname{Copie \`a}
+  \def\pagename{Page}
+\def\today{\ifnum\day=1\relax 1\/$^{\rm er}$\else
+  \number\day\fi \space\ifcase\month\or
+  janvier\or f\'evrier\or mars\or avril\or mai\or juin\or
+  juillet\or ao\^ut\or septembre\or octobre\or novembre\or
+  d\'ecembre\fi
+  \space\number\year} 
+
+% Malheureusement, il y a un bogue dans Babel qui fait que
+% figurename, tablename, etc. se réinitialise toujours à la valeur par
+% défaut. Plutôt qu'avoir Figure et Tableau, en Français, on a
+% Fig et Tab, à moins de recopier.
+\def\captionsfrench{
+   \def\refname{R\'ef\'erences}%
+   \def\abstractname{R\'esum\'e}%
+   \def\bibname{Bibliographie}%
+   \def\prefacename{Avant-propos}%
+   \def\chaptername{Chapitre}%
+   \def\appendixname{Annexe}%
+   \def\contentsname{Table des mati\`eres}%
+   \def\listfigurename{Liste des figures}%
+   \def\listtablename{Liste des tableaux}%
+   \def\indexname{Index}%
+   \def\figurename{Figure}%
+   \def\tablename{Tableau}%
+   \def\CaptionSeparator{\space\textendash\space}%
+   \def\partname{\protect\@Fpt partie}%
+   \def\@Fpt{{\ifcase\value{part}\or Premi\`ere\or Deuxi\`eme\or
+   Troisi\`eme\or Quatri\`eme\or Cinqui\`eme\or Sixi\`eme\or
+   Septi\`eme\or Huiti\`eme\or Neuvi\`eme\or Dixi\`eme\or Onzi\`eme\or
+   Douzi\`eme\or Treizi\`eme\or Quatorzi\`eme\or Quinzi\`eme\or
+   Seizi\`eme\or Dix-septi\`eme\or Dix-huiti\`eme\or Dix-neuvi\`eme\or
+   Vingti\`eme\fi}\space\def\thepart{}}%
+   \def\pagename{page}%
+   \def\seename{{\emph{voir}}}%
+   \def\alsoname{{\emph{voir aussi}}}%
+   \def\enclname{P.~J. }%
+   \def\ccname{Copie \`a }%
+   \def\headtoname{}%
+   \def\proofname{D\'emonstration}% for AMS-\LaTeX
+   \def\glossaryname{Glossaire}%
+}
+

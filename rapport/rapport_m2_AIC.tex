@@ -1,0 +1,188 @@
+%% Template pour rapport de stage du master AIC (Apprentissage,
+%% Information et Contenu), Université Paris-Saclay
+%% Template d'origine : 
+%% Copyright (C) 2008 Johan Oudinet <oudinet@lri.fr>
+%%  
+%% Permission is granted to make and distribute verbatim copies of
+%% this manual provided the copyright notice and this permission notice
+%% are preserved on all copies.
+%%  
+%% Permission is granted to process this file through TeX and print the
+%% results, provided the printed document carries copying permission
+%% notice identical to this one except for the removal of this paragraph
+%% (this paragraph not being relevant to the printed manual).
+%%  
+%% Permission is granted to copy and distribute modified versions of this
+%% manual under the conditions for verbatim copying, provided that the
+%% entire resulting derived work is distributed under the terms of a 
+%% permission notice identical to this one.
+%%  
+%% Permission is granted to copy and distribute translations of this manual
+%% into another language, under the above conditions for modified versions,
+%% except that this permission notice may be stated in a translation
+%% approved by the Free Software Foundation
+%%  
+
+\documentclass[oneside]{memoir}
+\input{definition}
+
+
+\usepackage[latin1]{inputenc}
+\usepackage{epsfig}
+\usepackage{acronym}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{pgf}
+\usepackage{tikz}
+\usepackage{setspace}%
+\usepackage{hhline}
+\usepackage[colorlinks]{hyperref}
+\usepackage[all]{hypcap}
+\usepackage{algorithm, algorithmic}
+\usepackage[french]{babel}
+\usetikzlibrary{shapes,arrows,automata,backgrounds}
+\usepackage{wrapfig}
+\usepackage{microtype}
+\usepackage{multicol}
+% \usepackage[T1]{fontenc}
+
+\input{french_stuff}
+%% Page layout
+\setlength{\oddsidemargin}{1cm}
+\setlength{\evensidemargin}{1.5cm}
+\setlength{\topmargin}{0cm}
+\setlength{\textheight}{21cm}
+\setlength{\textwidth}{15cm}
+
+% \setlength{\beforeschapskip}{-2cm}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\begin{document}
+
+\begin{titlingpage}
+ 
+\begin{center}
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LOGOS: 
+% 
+\includegraphics[height=2cm]{logos/upsay.pdf} \hfill % Paris-Saclay: Don't remove !
+\includegraphics[height=2cm]{logos/ups.png} % Your school inside Paris-Saclay
+\\[1.5cm]
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Your specific logos (labs, companies, .... )
+\begin{minipage}{0.2\textwidth}
+  \begin{flushright}
+    \includegraphics[width=0.6\textwidth]{logos/limsi.png}
+  \end{flushright}
+\end{minipage}
+\begin{minipage}{0.2\textwidth}
+  \begin{flushright}
+    \includegraphics[width=0.5\textwidth]{logos/lri.png}
+  \end{flushright}
+\end{minipage}
+
+
+\vspace{2cm} 
+\textsc{\Large Stage de Master 2 Recherche en Informatique}\\[0.5cm]
+ 
+ 
+% Title
+\HRule \\[0.4cm]
+{ \huge \bfseries Introducing prior knowledge in the loss function in order to do segmentation of medical images}\\[0.4cm]
+ 
+\HRule \\[1.5cm]
+ 
+% Author and supervisor
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Auteur :}\\
+Prénom \textsc{Nom}
+\end{flushleft}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Responsable de stage :} \\
+Dr. Prénom \textsc{Nom}
+\end{flushright}
+\end{minipage}
+\vfill
+\emph{Organisme d'accueil : }\\
+Laboratoire Truc
+
+ 
+\vfill
+
+
+ 
+% Bottom of the page
+{Secrétariat - tél : 01 69 15 81 58\\
+courrier électronique : alexandre.verrecchia@u-psud.fr\\
+} 
+\end{center}
+ 
+\end{titlingpage}
+
+\newcommand{\Loss}{\mathcal{L}}
+
+\pagenumbering{roman}
+
+\tableofcontents
+
+\newpage
+\thispagestyle{empty}%
+\newpage
+
+\chapter*{Résumé}
+
+Post hoc impie perpetratum quod in aliis quoque iam timebatur, tamquam
+licentia crudelitati indulta per suspicionum nebulas aestimati quidam
+noxii damnabantur. quorum pars necati, alii puniti bonorum multatione
+actique laribus suis extorres nullo sibi relicto praeter querelas et
+lacrimas, stipe conlaticia victitabant, et civili iustoque imperio ad
+voluntatem converso cruentam, claudebantur opulentae domus et
+clarae~\cite{ammianius42}.
+
+\section*{Mots clefs}
+Post, impie, aliis, multatione, domus.
+
+\pagebreak
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\input{intro}
+
+\input{presentationLab}
+
+\input{relativeWorks}
+	
+
+\input{conclu}
+
+\chapter*{Remerciements}
+Saraceni tamen nec amici nobis umquam nec hostes optandi, ultro
+citroque discursantes quicquid inveniri poterat momento temporis parvi
+vastabant milvorum rapacium similes, qui si praedam dispexerint
+celsius, volatu rapiunt celeri, aut nisi impetraverint, non
+inmorantur.
+
+\bibliographystyle{plain}
+\bibliography{rapportM2R}
+
+\appendix
+
+% \input{appendixA}
+
+\end{document}
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "rapportM2R"
+%%% End: 
