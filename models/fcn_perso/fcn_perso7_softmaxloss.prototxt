@@ -29,7 +29,6 @@ layer {
     }
 }
 
-
 layer {
   name: "conv1"
   type: "Convolution"
@@ -391,7 +390,7 @@ layer {
     group: 3
     stride: 2
     weight_filler {
-      type: "bilinear"
+      type: "xavier"
     }
     engine: CAFFE
   }
@@ -437,6 +436,6 @@ layer {
   top: "loss_softmax"
   loss_param {
     ignore_label: 255
-    normalize: true
+    normalize: false
   }
 }

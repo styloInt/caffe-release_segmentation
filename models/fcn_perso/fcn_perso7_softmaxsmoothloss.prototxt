@@ -438,7 +438,7 @@ layer {
   loss_weight: 0.6
   loss_param {
     ignore_label: 255
-    normalize: true
+    normalize: false
   }
 }
 
@@ -450,6 +450,6 @@ layer {
     top: "loss_smooth"
     loss_weight: 0.4
     loss_param {
-      normalize: true
+      normalize: false
     }
   }

@@ -7,7 +7,7 @@ layer {
   python_param {
     module: "rv_layers"
     layer: "RV_layer"
-    param_str: "{\'rv_dir\': \'/home/atemmar/Documents/Stage_ets/caffe-release_segmentation/dataSet_preprocess/Train_croped\', \'seed\': 1337, \'split\': \'train_x_files.txt\', \'mean_image\': \'/home/atemmar/Documents/Stage_ets/caffe-release_segmentation/dataSet_preprocess/Train_croped/mean_image.png\'}"
+    param_str: "{\'rv_dir\': \'/home/atemmar/Documents/Stage_ets/caffe-release_segmentation/dataSet_preprocess/Train_augmented\', \'seed\': 1337, \'split\': \'train_x_files.txt\', \'image_template\': \'/home/atemmar/Documents/Stage_ets/caffe-release_segmentation/dataSet_preprocess/Train/IRM/0.png\'}"
   }
   include{
     phase : TRAIN
@@ -22,7 +22,7 @@ layer {
   python_param {
     module: "rv_layers"
     layer: "RV_layer"
-    param_str: "{\'rv_dir\': \'/home/atemmar/Documents/Stage_ets/caffe-release_segmentation/dataSet_preprocess/Test_croped\', \'seed\': 1337, \'split\': \'test_x_files.txt\', \'mean_image\': \'/home/atemmar/Documents/Stage_ets/caffe-release_segmentation/dataSet_preprocess/Train_croped/mean_image.png\'}"
+    param_str: "{\'rv_dir\': \'/home/atemmar/Documents/Stage_ets/caffe-release_segmentation/dataSet_preprocess/Test\', \'seed\': 1337, \'split\': \'test_x_files.txt\', \'image_template\': \'/home/atemmar/Documents/Stage_ets/caffe-release_segmentation/dataSet_preprocess/Train/IRM/0.png\'}"
   }
   include{
     phase : TEST
@@ -45,7 +45,7 @@ layer {
   }
   convolution_param {
     num_output: 64
-    pad: 80
+    pad: 100
     kernel_size: 3
     stride: 1
     weight_filler {
@@ -785,7 +785,7 @@ layer {
   top: "score"
   crop_param {
     axis: 2
-    offset: 31
+    #offset: 31
   }
 }
 layer {
